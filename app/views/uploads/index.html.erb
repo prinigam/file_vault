@@ -7,6 +7,7 @@
     <%= render upload %>
     <p>
       <%= link_to "Show this upload", upload %>
+      <%= button_to "Delete this upload", upload_path(upload), method: :delete, data: { confirm: "Are you sure?" }, form: { style: 'display: inline' } %>
     </p>
   <% end %>
 </div>

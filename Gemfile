@@ -69,3 +69,5 @@ end
 
 gem 'devise', '~> 4.9'
 gem 'aws-sdk-s3', require: false
+gem 'sidekiq'
+gem 'mini_magick'
