@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get '/s/:url', to: 'shared_uploads#show', as: :shared_upload
   resources :uploads
   root "dashboard#index"
   devise_for :users

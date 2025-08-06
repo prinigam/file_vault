@@ -8,3 +8,9 @@
     <%= link_to "Download File", rails_blob_url(@upload.file, disposition: "attachment"), target: "_blank" %>
   </p>
 <% end %>
+<% if @upload.url.present? %>
+  <p>
+    <strong>Public Share URL:</strong>
+    <%= link_to shared_upload_url(@upload.url), shared_upload_url(@upload.url), target: "_blank" %>
+  </p>
+<% end %>
