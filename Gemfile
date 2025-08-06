@@ -71,3 +71,5 @@ gem 'devise', '~> 4.9'
 gem 'aws-sdk-s3', require: false
 gem 'sidekiq'
 gem 'mini_magick'
+gem 'bootstrap', '~> 5.3.0'
+gem 'sassc-rails'
