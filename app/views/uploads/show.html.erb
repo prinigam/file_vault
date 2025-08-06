@@ -1,0 +1,10 @@
+<p><strong>Title:</strong> <%= @upload.title %></p>
+<p><strong>Description:</strong> <%= @upload.description %></p>
+<p><strong>File Type:</strong> <%= @upload.file_type %></p>
+<p><strong>File Size:</strong> <%= number_to_human_size(@upload.file_size) %></p>
+
+<% if @upload.file.attached? %>
+  <p><strong>Download:</strong>
+    <%= link_to "Download File", rails_blob_url(@upload.file, disposition: "attachment"), target: "_blank" %>
+  </p>
+<% end %>
