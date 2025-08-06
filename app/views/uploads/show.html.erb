@@ -12,5 +12,6 @@
   <p>
     <strong>Public Share URL:</strong>
     <%= link_to shared_upload_url(@upload.url), shared_upload_url(@upload.url), target: "_blank" %>
+    <%= button_to "Copy", "#", onclick: "navigator.clipboard.writeText(document.getElementById('public_link').value)", type: 'button' %>
   </p>
 <% end %>
