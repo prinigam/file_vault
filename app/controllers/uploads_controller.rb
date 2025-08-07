@@ -5,7 +5,7 @@ class UploadsController < ApplicationController
 
   # GET /uploads
   def index
-    @uploads = current_user.uploads
+    @uploads = current_user.uploads.page(params[:page]).per(9)
   end
 
   # GET /uploads/1
