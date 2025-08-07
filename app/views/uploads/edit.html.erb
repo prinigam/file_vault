@@ -1,10 +1,17 @@
-<h1>Editing upload</h1>
 
-<%= render "form", upload: @upload %>
-
-<br>
-
-<div>
-  <%= link_to "Show this upload", @upload %> |
-  <%= link_to "Back to uploads", uploads_path %>
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-4">
+          <h2 class="mb-4">Edit Upload</h2>
+          <%= render "form", upload: @upload %>
+          <div class="mt-4 d-flex gap-2">
+            <%= link_to "Show this Upload", @upload, class: "btn btn-outline-primary rounded-pill px-3" %>
+            <%= link_to "Back to Uploads", uploads_path, class: "btn btn-light border rounded-pill px-3" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

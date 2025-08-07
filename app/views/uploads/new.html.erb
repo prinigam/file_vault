@@ -1,9 +1,16 @@
-<h1>New upload</h1>
 
-<%= render "form", upload: @upload %>
-
-<br>
-
-<div>
-  <%= link_to "Back to uploads", uploads_path %>
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-4">
+          <h2 class="mb-4">New Upload</h2>
+          <%= render "form", upload: @upload %>
+          <div class="mt-4">
+            <%= link_to "Back to Uploads", uploads_path, class: "btn btn-light border" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

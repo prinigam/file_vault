@@ -1,0 +1,5 @@
+<li class="page-item <%= 'disabled' if current_page.first? %>">
+  <%= link_to_unless current_page.first?, raw('First'), url, remote: remote, class: 'page-link', aria: { label: 'First' } do %>
+    <span class="page-link" aria-hidden="true">First</span>
+  <% end %>
+</li>

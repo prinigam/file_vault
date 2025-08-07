@@ -1,8 +1,13 @@
-<%= form_with(model: upload, local: true, html: { multipart: true }) do |form| %>
+<%= form_with(model: upload, local: true, html: {
+  multipart: true,
+  id: "upload-form",
+  class: "needs-validation",
+  data: { has_file: upload.persisted? && upload.file.attached? }
+}) do |form| %>
   <% if upload.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(upload.errors.count, "error") %> prohibited this upload from being saved:</h2>
-      <ul>
+    <div class="alert alert-danger">
+      <h5 class="mb-2"><%= pluralize(upload.errors.count, "error") %> prohibited this upload from being saved:</h5>
+      <ul class="mb-0">
         <% upload.errors.full_messages.each do |message| %>
           <li><%= message %></li>
         <% end %>
@@ -10,22 +15,90 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
+  <div class="mb-3">
+    <%= form.label :title, class: "form-label" %>
+    <%= form.text_field :title, class: "form-control", placeholder: "Enter a title", id: "title-input" %>
+    <div id="title-error" class="text-danger mt-2" style="display:none;"></div>
   </div>
 
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_area :description %>
+  <div class="mb-3">
+    <%= form.label :description, class: "form-label" %>
+    <%= form.text_area :description, class: "form-control", rows: 3, placeholder: "Add a description (optional)" %>
   </div>
 
-  <div>
-    <%= form.label :file, style: "display: block" %>
-    <%= form.file_field :file %>
+  <div class="mb-4">
+    <%= form.label :file, class: "form-label" %>
+
+    <% if upload.persisted? && upload.file.attached? %>
+      <div class="mb-2">
+        <p class="form-text text-muted">
+          <strong>Current file:</strong>
+          <%= link_to upload.file.filename.to_s, url_for(upload.file), target: "_blank" %>
+          (<%= number_to_human_size(upload.file.byte_size) %>)
+        </p>
+        <p class="form-text text-muted">You can choose a new file to replace the existing one:</p>
+      </div>
+    <% end %>
+
+    <%= form.file_field :file, class: "form-control", id: "file-input" %>
+    <div id="file-error" class="text-danger mt-2" style="display:none;"></div>
   </div>
 
+
   <div>
-    <%= form.submit %>
+    <%= form.submit "Upload", class: "btn btn-primary px-4", data: { disable_with: "Uploading..." } %>
   </div>
 <% end %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('upload-form');
+    const titleInput = document.getElementById('title-input');
+    const fileInput = document.getElementById('file-input');
+    const titleErrorDiv = document.getElementById('title-error');
+    const fileErrorDiv = document.getElementById('file-error');
+
+    // Correctly read if file is already attached (on edit)
+    const hasFileAlready = form.dataset.hasFile === "true";
+
+    form.addEventListener('submit', function (e) {
+      titleErrorDiv.style.display = 'none';
+      fileErrorDiv.style.display = 'none';
+
+      let valid = true;
+
+      // Title required
+      if (!titleInput.value.trim()) {
+        titleErrorDiv.textContent = 'Title is required.';
+        titleErrorDiv.style.display = 'block';
+        titleInput.focus();
+        valid = false;
+      }
+
+      // File required unless already attached
+      const fileSelected = fileInput.files.length > 0;
+      if (!hasFileAlready && !fileSelected) {
+        fileErrorDiv.textContent = 'File is required.';
+        fileErrorDiv.style.display = 'block';
+        if (valid) fileInput.focus();
+        valid = false;
+      }
+
+      // File size check
+      if (fileSelected) {
+        const file = fileInput.files[0];
+        if (file.size > 1024 * 1024 * 1024) {
+          fileErrorDiv.textContent = 'File must be less than 1 GB.';
+          fileErrorDiv.style.display = 'block';
+          fileInput.focus();
+          valid = false;
+        }
+      }
+
+      if (!valid) e.preventDefault();
+    });
+
+    titleInput.addEventListener('input', () => titleErrorDiv.style.display = 'none');
+    fileInput.addEventListener('change', () => fileErrorDiv.style.display = 'none');
+  });
+</script>

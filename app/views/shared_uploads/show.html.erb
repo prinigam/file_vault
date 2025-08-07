@@ -1,12 +1,41 @@
-<h2>Shared File</h2>
 
-<p><strong>Title:</strong> <%= @upload.title %></p>
-<p><strong>Description:</strong> <%= @upload.description %></p>
-<p><strong>File Type:</strong> <%= @upload.file_type %></p>
-<p><strong>File Size:</strong> <%= number_to_human_size(@upload.file_size) %></p>
-
-<% if @upload.file.attached? %>
-  <p>
-    <%= link_to "Download File", rails_blob_url(@upload.file, disposition: "attachment"), target: "_blank" %>
-  </p>
-<% end %>
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+      <div class="glass-card shadow-lg border-0 rounded-4 overflow-hidden position-relative">
+        <div class="accent-bar position-absolute top-0 start-0"></div>
+        <div class="card-body bg-transparent">
+          <div class="d-flex align-items-center mb-3">
+            <div class="bg-primary bg-gradient text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width:3rem;height:3rem;font-size:1.5rem;">
+              <i class="bi bi-file-earmark-arrow-up"></i>
+            </div>
+            <div>
+              <h2 class="mb-1 text-gradient fw-bold">
+                <%= @upload.title.presence || 'Untitled' %>
+              </h2>
+              <span class="badge-filetype"><%= @upload.file_type.to_s.split('/').last.upcase.presence || 'N/A' %></span>
+            </div>
+          </div>
+          <p class="text-muted mb-3" style="min-height:1.5em;">
+            <%= @upload.description.present? ? @upload.description : '&nbsp;'.html_safe %>
+          </p>
+          <div class="mb-3">
+            <div class="mb-1">
+              <span class="fw-semibold text-secondary small">Size:</span>
+              <span class="small ms-2">
+                <%= @upload.file_size.present? ? number_to_human_size(@upload.file_size) : 'N/A' %>
+              </span>
+            </div>
+          </div>
+          <% if @upload.file.attached? %>
+            <div class="mb-3 d-flex align-items-center gap-2">
+              <%= link_to rails_blob_url(@upload.file, disposition: "attachment"), target: "_blank", class: "btn btn-outline-primary btn-sm rounded-pill px-3", title: "Download File" do %>
+                <i class="bi bi-download me-1"></i> Download
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

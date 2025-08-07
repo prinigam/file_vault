@@ -1,17 +1,48 @@
-<p><strong>Title:</strong> <%= @upload.title %></p>
-<p><strong>Description:</strong> <%= @upload.description %></p>
-<p><strong>File Type:</strong> <%= @upload.file_type %></p>
-<p><strong>File Size:</strong> <%= number_to_human_size(@upload.file_size) %></p>
 
-<% if @upload.file.attached? %>
-  <p><strong>Download:</strong>
-    <%= link_to "Download File", rails_blob_url(@upload.file, disposition: "attachment"), target: "_blank" %>
-  </p>
-<% end %>
-<% if @upload.url.present? %>
-  <p>
-    <strong>Public Share URL:</strong>
-    <%= link_to shared_upload_url(@upload.url), shared_upload_url(@upload.url), target: "_blank" %>
-    <%= button_to "Copy", "#", onclick: "navigator.clipboard.writeText(document.getElementById('public_link').value)", type: 'button' %>
-  </p>
-<% end %>
+
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+      <div class="glass-card shadow-lg border-0 rounded-4 overflow-hidden position-relative">
+        <div class="accent-bar position-absolute top-0 start-0"></div>
+        <div class="card-body bg-transparent">
+          <div class="d-flex align-items-center mb-3">
+            <div class="bg-primary bg-gradient text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width:3rem;height:3rem;font-size:1.5rem;">
+              <i class="bi bi-file-earmark-arrow-up"></i>
+            </div>
+            <h2 class="mb-1 text-gradient fw-bold">
+              <%= @upload.title.presence || 'Untitled' %>
+            </h2>
+            <div>
+              <span class="badge-filetype"><%= @upload.file_type.to_s.split('/').last.upcase.presence || 'N/A' %></span>
+            </div>
+          </div>
+          <% if @upload.description.present? %>
+            <p class="text-muted mb-3"><%= @upload.description %></p>
+          <% end %>
+          <ul class="list-group list-group-flush mb-3">
+            <li class="list-group-item px-0 py-1"><strong>Size:</strong> <%= number_to_human_size(@upload.file_size) %></li>
+          </ul>
+          <% if @upload.url.present? %>
+            <div class="mb-3 d-flex align-items-center flex-wrap gap-2">
+              <strong class="me-2">Public Share URL:</strong>
+              <input type="text" class="form-control d-inline-block w-auto" id="public_link" value="<%= shared_upload_url(@upload.url) %>" readonly style="max-width: 350px; min-width: 180px;">
+              <button class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center ms-1" type="button" title="Copy URL" onclick="navigator.clipboard.writeText(document.getElementById('public_link').value)">
+                <i class="bi bi-clipboard"></i>
+              </button>
+              <% if @upload.file.attached? %>
+                <%= link_to rails_blob_url(@upload.file, disposition: "attachment"), target: "_blank", class: "btn btn-outline-primary btn-sm rounded-pill px-3 ms-2", title: "Download File" do %>
+                  <i class="bi bi-download me-1"></i> Download
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+          <div class="d-flex justify-content-between align-items-center mt-4">
+            <%= link_to "Back to Uploads", uploads_path, class: "btn btn-light border rounded-pill px-3" %>
+            <%= link_to "Edit", edit_upload_path(@upload), class: "btn btn-primary rounded-pill px-3" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
