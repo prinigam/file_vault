@@ -9,31 +9,36 @@
             <div class="bg-primary bg-gradient text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width:3rem;height:3rem;font-size:1.5rem;">
               <i class="bi bi-file-earmark-arrow-up"></i>
             </div>
+            <h2 class="mb-1 text-gradient fw-bold">
+              <%= @upload.title.presence || 'Untitled' %>
+            </h2>
             <div>
-              <h2 class="mb-1 text-gradient fw-bold">
-                <%= @upload.title.presence || 'Untitled' %>
-              </h2>
               <span class="badge-filetype"><%= @upload.file_type.to_s.split('/').last.upcase.presence || 'N/A' %></span>
             </div>
           </div>
-          <p class="text-muted mb-3" style="min-height:1.5em;">
-            <%= @upload.description.present? ? @upload.description : '&nbsp;'.html_safe %>
-          </p>
-          <div class="mb-3">
-            <div class="mb-1">
-              <span class="fw-semibold text-secondary small">Size:</span>
-              <span class="small ms-2">
-                <%= @upload.file_size.present? ? number_to_human_size(@upload.file_size) : 'N/A' %>
-              </span>
-            </div>
-          </div>
-          <% if @upload.file.attached? %>
-            <div class="mb-3 d-flex align-items-center gap-2">
-              <%= link_to rails_blob_url(@upload.file, disposition: "attachment"), target: "_blank", class: "btn btn-outline-primary btn-sm rounded-pill px-3", title: "Download File" do %>
-                <i class="bi bi-download me-1"></i> Download
+          <% if @upload.description.present? %>
+            <p class="text-muted mb-3"><%= @upload.description %></p>
+          <% end %>
+          <ul class="list-group list-group-flush mb-3">
+            <li class="list-group-item px-0 py-1"><strong>Size:</strong> <%= number_to_human_size(@upload.file_size) %></li>
+          </ul>
+          <% if @upload.url.present? %>
+            <div class="mb-3 d-flex align-items-center flex-wrap gap-2">
+              <strong class="me-2">Public Share URL:</strong>
+              <input type="text" class="form-control d-inline-block w-auto" id="public_link" value="<%= shared_upload_url(@upload.url) %>" readonly style="max-width: 350px; min-width: 180px;">
+              <button class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center ms-1" type="button" title="Copy URL" onclick="navigator.clipboard.writeText(document.getElementById('public_link').value)">
+                <i class="bi bi-clipboard"></i>
+              </button>
+              <% if @upload.file.attached? %>
+                <%= link_to rails_blob_url(@upload.file, disposition: "attachment"), target: "_blank", class: "btn btn-outline-primary btn-sm rounded-pill px-3 ms-2", title: "Download File" do %>
+                  <i class="bi bi-download me-1"></i> Download
+                <% end %>
               <% end %>
             </div>
           <% end %>
+          <div class="d-flex justify-content-between align-items-center mt-4">
+            <%= link_to "Back to Uploads", uploads_path, class: "btn btn-light border rounded-pill px-3" %>
+          </div>
         </div>
       </div>
     </div>
