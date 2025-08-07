@@ -28,49 +28,70 @@ A secure file upload and management platform built with Ruby on Rails.
 - ImageMagick (for ActiveStorage)
 - Docker (optional)
 
+
 ## Setup Instructions
 
-### 1. Clone the repository
-```bash
-git clone https://github.com/prinigam/file_vault.git
-cd file_vault
-```
+### Option 1: Standard (No Docker)
 
-### 2. Install dependencies
-```bash
-bundle install
-yarn install
-```
+1. **Clone the repository**
+    ```bash
+    git clone https://github.com/prinigam/file_vault.git
+    cd file_vault
+    ```
 
-### 3. Setup database
-```bash
-rails db:create
-rails db:migrate
-rails db:seed # optional, for demo data
-```
+2. **Install dependencies**
+    ```bash
+    bundle install
+    yarn install
+    ```
 
-### 4. Setup credentials
-- Copy `config/master.key.example` to `config/master.key` if needed
-- Edit credentials with:
-```bash
-EDITOR=vim rails credentials:edit
-```
+3. **Setup database**
+    ```bash
+    rails db:create
+    rails db:migrate
+    rails db:seed # optional, for demo data
+    ```
 
-### 5. Start the Rails server
-```bash
-rails server
-```
-Visit [http://localhost:3000](http://localhost:3000) in your browser.
+4. **Setup credentials**
+    - Copy `config/master.key.example` to `config/master.key` if needed
+    - Edit credentials with:
+      ```bash
+      EDITOR=vim rails credentials:edit
+      ```
 
-### 6. Running with Docker (optional)
-```bash
-docker-compose up --build
-```
+5. **Start the Rails server**
+    ```bash
+    rails server
+    ```
+    Visit [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Running Tests
-```bash
-rails test
-```
+---
+
+### Option 2: Docker Setup
+
+1. **Clone the repository**
+    ```bash
+    git clone https://github.com/prinigam/file_vault.git
+    cd file_vault
+    ```
+
+2. **Build and start containers**
+    ```bash
+    sudo docker-compose up --build
+    ```
+    This will start Rails, PostgreSQL, and Redis in containers. The app will be available at [http://localhost:3000](http://localhost:3000).
+
+3. **Database setup (if needed)**
+    If you see database errors, run migrations inside the web container:
+    ```bash
+    sudo docker-compose exec web rails db:create db:migrate db:seed
+    ```
+
+4. **Credentials**
+    - If you need to edit credentials, run:
+      ```bash
+      sudo docker-compose exec web EDITOR=vim rails credentials:edit
+      ```
 
 ## Environment Variables
 - See `config/database.yml` and `config/storage.yml` for DB and storage config
