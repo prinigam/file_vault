@@ -99,6 +99,16 @@ This setup uses an entrypoint script that automatically prepares the database wh
 - Check `config/storage.yml` for storage settings
 - Store sensitive keys in Rails credentials
 
+### Example `.env` for AWS S3 Storage
+```
+AWS_ACCESS_KEY_ID=AKIA4SDNVPDJWOR52LV2
+AWS_SECRET_ACCESS_KEY=oxAN4fR+qE7H43AsU7rplrN6egNbb63OZ8M+3D4S
+AWS_REGION=ap-south-1
+AWS_BUCKET=filevault-ekanek
+```
+
+> **Important:** Never commit your real `.env` file or secrets to version control. Use environment variables or Rails credentials for production.
+
 ---
 
 ## Troubleshooting

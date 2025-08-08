@@ -1,6 +1,5 @@
 FROM ruby:3.0.6-bullseye
 
-# Install system dependencies
 RUN apt-get update -qq && apt-get install -y --no-install-recommends \
     build-essential \
     libpq-dev \
@@ -9,6 +8,7 @@ RUN apt-get update -qq && apt-get install -y --no-install-recommends \
     imagemagick \
     git \
     curl \
+    postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -18,16 +18,8 @@ RUN bundle install
 
 COPY . .
 
-# Make entrypoint script executable
-COPY entrypoint.sh /usr/bin/
+COPY entrypoint.sh /usr/bin/entrypoint.sh
 RUN chmod +x /usr/bin/entrypoint.sh
-
-ARG RAILS_ENV=development
-ENV RAILS_ENV=$RAILS_ENV
-
-RUN if [ "$RAILS_ENV" = "production" ]; then bundle exec rake assets:precompile; fi
-
-EXPOSE 3000
 
 ENTRYPOINT ["entrypoint.sh"]
 

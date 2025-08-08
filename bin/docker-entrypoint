@@ -1,14 +1,12 @@
 #!/bin/bash
 set -e
 
-# Remove old server PID if present
-rm -f tmp/pids/server.pid
+# Remove a potentially pre-existing server.pid for Rails
+rm -f /app/tmp/pids/server.pid
 
-echo "=== Preparing database ==="
-bundle exec rake db:create db:migrate
+# Prepare DB (create + migrate)
+echo "Running database setup..."
+bundle exec rails db:create db:migrate
 
-# Uncomment if you want seed data in every boot (usually only in dev)
-# bundle exec rake db:seed
-
-echo "=== Starting Rails server ==="
+# Execute the container's main process (what’s in CMD)
 exec "$@"

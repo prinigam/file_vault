@@ -6,19 +6,14 @@ rm -f tmp/pids/server.pid
 
 # Wait for DB to be ready
 if [ "$RAILS_ENV" = "production" ] || [ "$RAILS_ENV" = "development" ]; then
-  echo "Waiting for database..."
-  while ! nc -z db 5432; do
+  echo "Waiting for database at $DB_HOST:$DB_PORT..."
+  until pg_isready -h "$DB_HOST" -p "$DB_PORT" > /dev/null 2>&1; do
     sleep 1
   done
 fi
 
-# Create and migrate DB
+# Prepare database
 bundle exec rails db:create db:migrate
 
-# Precompile assets only in production
-if [ "$RAILS_ENV" = "production" ]; then
-  bundle exec rake assets:precompile
-fi
-
-# Start server
-exec bundle exec rails server -b 0.0.0.0 -p 3000
+# Execute CMD from Dockerfile or docker-compose
+exec "$@"
