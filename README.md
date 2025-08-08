@@ -1,24 +1,17 @@
-# README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
 # File Vault
 
-A secure file upload and management platform built with Ruby on Rails.
+>A secure file upload and management platform built with Ruby on Rails.
+
+---
 
 ## Features
-- User authentication (Devise)
-- File uploads with validations
-- File compression for large files
-- Dashboard and sharing features
-- Responsive UI (Bootstrap)
+- **User authentication** (Devise)
+- **File uploads** with validations
+- **File compression** for large files
+- **Dashboard** and sharing features
+- **Responsive UI** (Bootstrap)
+
+---
 
 ## Prerequisites
 - Ruby (>= 3.0)
@@ -26,12 +19,13 @@ A secure file upload and management platform built with Ruby on Rails.
 - PostgreSQL
 - Node.js & Yarn (for JS dependencies)
 - ImageMagick (for ActiveStorage)
-- Docker (optional)
+- Docker & Docker Compose (optional)
 
+---
 
 ## Setup Instructions
 
-### Option 1: Standard (No Docker)
+### Option 1: Standard (Without Docker)
 
 1. **Clone the repository**
     ```bash
@@ -45,7 +39,7 @@ A secure file upload and management platform built with Ruby on Rails.
     yarn install
     ```
 
-3. **Setup database**
+3. **Setup the database**
     ```bash
     rails db:create
     rails db:migrate
@@ -54,7 +48,7 @@ A secure file upload and management platform built with Ruby on Rails.
 
 4. **Setup credentials**
     - Copy `config/master.key.example` to `config/master.key` if needed
-    - Edit credentials with:
+    - Edit credentials:
       ```bash
       EDITOR=vim rails credentials:edit
       ```
@@ -69,39 +63,54 @@ A secure file upload and management platform built with Ruby on Rails.
 
 ### Option 2: Docker Setup
 
+This setup uses an entrypoint script that automatically prepares the database when the container starts.
+
 1. **Clone the repository**
     ```bash
     git clone https://github.com/prinigam/file_vault.git
     cd file_vault
     ```
 
-
-2. **Build and start containers**
+2. **Build and start the containers**
     ```bash
     sudo docker-compose up --build
     ```
-    This will start Rails, PostgreSQL, and Redis in containers. The app will be available at [http://localhost:3000](http://localhost:3000).
+    This starts:
+    - Rails app (port 3000)
+    - PostgreSQL
+    - Redis
+    Visit [http://localhost:3000](http://localhost:3000).
 
-    **Note:** Database creation and migration are handled automatically by the entrypoint script. You do not need to run migrations manually unless you want to seed demo data:
+    **Note:** Database creation and migrations run automatically via `entrypoint.sh`.
+    To seed demo data manually:
     ```bash
     sudo docker-compose exec web rails db:seed
     ```
 
-3. **Credentials**
-    - If you need to edit credentials, run:
-      ```bash
-      sudo docker-compose exec web EDITOR=vim rails credentials:edit
-      ```
+3. **Edit credentials (inside the container)**
+    ```bash
+    sudo docker-compose exec web EDITOR=vim rails credentials:edit
+    ```
+
+---
 
 ## Environment Variables
-- See `config/database.yml` and `config/storage.yml` for DB and storage config
-- Use Rails credentials for secrets
+- Check `config/database.yml` for DB settings
+- Check `config/storage.yml` for storage settings
+- Store sensitive keys in Rails credentials
+
+---
 
 ## Troubleshooting
 - Ensure PostgreSQL and Redis are running
-- Check `.env` and credentials for missing keys
+- Verify `.env` and Rails credentials for missing keys
 - For file uploads, ensure ImageMagick is installed
+- For Docker: If DB changes don’t apply, run:
+    ```bash
+    sudo docker-compose exec web rails db:migrate
+    ```
+
+---
 
 ## License
-
-For more details, see the branch commit messages and documentation/comments in each module.
+For more details, see the branch commit messages and comments in the source code.

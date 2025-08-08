@@ -1,8 +1,14 @@
-#!/bin/bash -e
+#!/bin/bash
+set -e
 
-# If running the rails server then create or migrate existing database
-if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
-  ./bin/rails db:prepare
-fi
+# Remove old server PID if present
+rm -f tmp/pids/server.pid
 
-exec "${@}"
+echo "=== Preparing database ==="
+bundle exec rake db:create db:migrate
+
+# Uncomment if you want seed data in every boot (usually only in dev)
+# bundle exec rake db:seed
+
+echo "=== Starting Rails server ==="
+exec "$@"
