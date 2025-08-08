@@ -75,19 +75,19 @@ A secure file upload and management platform built with Ruby on Rails.
     cd file_vault
     ```
 
+
 2. **Build and start containers**
     ```bash
     sudo docker-compose up --build
     ```
     This will start Rails, PostgreSQL, and Redis in containers. The app will be available at [http://localhost:3000](http://localhost:3000).
 
-3. **Database setup (if needed)**
-    If you see database errors, run migrations inside the web container:
+    **Note:** Database creation and migration are handled automatically by the entrypoint script. You do not need to run migrations manually unless you want to seed demo data:
     ```bash
-    sudo docker-compose exec web rails db:create db:migrate db:seed
+    sudo docker-compose exec web rails db:seed
     ```
 
-4. **Credentials**
+3. **Credentials**
     - If you need to edit credentials, run:
       ```bash
       sudo docker-compose exec web EDITOR=vim rails credentials:edit
