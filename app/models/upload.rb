@@ -4,8 +4,8 @@ class Upload < ApplicationRecord
 
   validates :title, presence: true
   validate :file_presence_required
-  validate :file_size_within_limit
 
+  before_save :file_size_within_limit
   before_save :extract_file_metadata
   before_create :generate_url
   after_commit :may_compress_file, on: :create
