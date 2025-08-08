@@ -101,15 +101,13 @@ This setup uses an entrypoint script that automatically prepares the database wh
 
 ### Example `.env` for AWS S3 Storage
 ```
-AWS_ACCESS_KEY_ID=AKIA4SDNVPDJWOR52LV2
-AWS_SECRET_ACCESS_KEY=oxAN4fR+qE7H43AsU7rplrN6egNbb63OZ8M+3D4S
-AWS_REGION=ap-south-1
-AWS_BUCKET=filevault-ekanek
+
+You'll need environment keys to put into env file, for this please ask for credtials
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_REGION=
+AWS_BUCKET=
 ```
-
-> **Important:** Never commit your real `.env` file or secrets to version control. Use environment variables or Rails credentials for production.
-
----
 
 ## Troubleshooting
 - Ensure PostgreSQL and Redis are running
