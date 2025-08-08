@@ -32,6 +32,7 @@ class Upload < ApplicationRecord
     return unless file.attached?
     if file.byte_size > MAX_FILE_SIZE
       errors.add(:file, "must be less than 1 GB")
+      return
     end
   end
 
