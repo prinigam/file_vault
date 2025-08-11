@@ -122,3 +122,7 @@ AWS_BUCKET=
 
 ## License
 For more details, see the branch commit messages and comments in the source code.
+
+
+## Live URL
+If you're having trouble running server locally, then hit http://15.206.80.147/ to see running liver server
